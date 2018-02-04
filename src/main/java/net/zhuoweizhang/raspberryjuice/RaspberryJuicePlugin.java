@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
@@ -114,6 +115,21 @@ public class RaspberryJuicePlugin extends JavaPlugin implements Listener {
 		//getLogger().info("Chat event fired");
 		for (RemoteSession session: sessions) {
 			session.queueChatPostedEvent(event);
+		}
+	}
+
+        @EventHandler(ignoreCancelled=true)
+	public void onProjectileHit(ProjectileHitEvent event) {
+		//getLogger().info("Chat event fired");
+		/*
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+		ItemStack currentTool = event.getPlayer().getItemInHand();
+		if (currentTool == null || !blockBreakDetectionTools.contains(currentTool.getType())) {
+			return;
+		}
+		*/
+		for (RemoteSession session: sessions) {
+			session.queueProjectileHitEvent(event);
 		}
 	}
 
