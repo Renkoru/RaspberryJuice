@@ -165,6 +165,12 @@ class CmdEvents:
         events = [e for e in s.split("|") if e]
         return [ChatEvent.Post(int(e[:e.find(",")]), e[e.find(",") + 1:]) for e in events]
 
+    def pollProjectileHits(self):
+        """Only triggered by projectiles => [BlockEvent]"""
+        s = self.conn.sendReceive(b"events.projectile.hits")
+        events = [e for e in s.split("|") if e]
+        return [BlockEvent.Hit(*map(int, e.split(","))) for e in events]
+
 class Minecraft:
     """The main class to interact with a running instance of Minecraft Pi."""
     def __init__(self, connection):
